@@ -1,0 +1,356 @@
+*{
+    font-family: 'Times New Roman', Times, serif;
+}
+
+body{
+    position: relative;
+    margin: 0;
+    padding: 0;
+    background-image: url('https://storage.pixteller.com/designs/designs-images/2019-03-27/05/simple-background-backgrounds-passion-simple-1-5c9b95c3a34f9.png');
+}
+nav, .fview{
+    animation: pop 1.4s ease-in;
+}
+@keyframes pop {
+    0%{
+        opacity: 0;
+    }100%{
+        opacity: 1;
+    }
+}
+
+nav{
+    position: fixed;
+    background-color: transparent;
+    width: 100%;
+    height: clamp(30px, 10vh, 60px); /* minimum, viewport,max*/
+    display: flex;
+    align-items: center;
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+    
+}
+nav h1 {
+    color: black;
+}
+nav h1 span{
+    font-size: 30px;
+    color: rgb(255, 0, 0);
+}
+
+nav h2{
+    padding: 5px 12px; /*top/bottom right/left*/
+    border-radius: 5px;
+    position: fixed;
+    right: 0;
+    margin-right: 3%;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    user-select: none;
+    font-size: clamp(1.5rem, 5vw, .5rem);
+}
+
+nav h2:hover{
+    cursor: pointer;
+}
+nav h2:active{
+    background-color: rgb(255, 145, 55);
+    color: red;
+    
+}
+
+nav .logo{
+    margin: 0 0 0 2.5%; /* top right bottom left*/
+    height: 75%;
+    width: auto;
+}
+
+.fview{
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* center horizontal child*/
+    align-items: center;
+    z-index: 1;
+    
+}
+.fview .word{
+    color: rgb(71, 79, 86);
+    font-family: Impact, Charcoal, sans-serif;
+    font-size: clamp(3.5rem, 10vw, 10rem); /* min, prefered, max */
+}
+hr{
+    width: 90%;
+}
+
+
+.fview p{
+    padding: 0 15% 0 15%;
+    font-size: clamp(16px,4vw,1.5rem);
+    text-align: start;
+}
+
+
+/* sign in and sign up parent */
+.form-container{
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    backdrop-filter: blur(5px) contrast(.5);
+    z-index: 3;
+    user-select: none;
+    display: none;
+}
+
+/* sign in container & sign up */
+.signin, .signup{
+    border-radius: 1rem;
+    
+    width: 425px;
+    background-color: rgb(245, 241, 241);
+    overflow: hidden;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+.signup {
+    height: 725px;
+    display: none;
+    animation: rotate .7s;
+}
+.signin{
+    height: 605px;
+    animation: rotatel .7s;
+}
+@keyframes rotate {
+    0%{
+        transform: translate(-50%,-50%) rotateY(180deg);
+    }
+    50%{
+        background-color: #ffd8d8ec;
+    }
+    100%{
+        transform: translate(-50%,-50%) rotateY(360deg);
+    }
+}
+@keyframes rotatel {
+    0%{
+        transform: translate(-50%,-50%) rotateY(180deg);
+    }
+    50%{
+        background-color: rgb(225, 255, 245);
+    }
+    100%{
+        transform: translate(-50%,-50%) rotateY(0deg);
+    }
+}
+
+.close{
+    padding: 15px;
+    height: 15px;
+    display: flex;
+    border-radius: 100%;
+    float: right;
+    margin: 20px 20px 0 0; /*top right bottom left (close icon position in signin form) */
+    transform: scale(1) rotate(0deg);
+    transition: .05s;
+}
+
+.close:hover{
+    transform: scale(1.4) rotate(180deg);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.7);
+    transition: .1s;
+}
+.close:active{
+    transform: scale(.99) rotate(180deg);
+    background-color: #ffa4a4;
+    transition: .05s;
+}
+
+
+form{
+    position: relative;
+    margin: auto;
+    height: 85%;
+    width: 100%;
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    color: #666666;
+}
+form h2{
+    text-align: center;
+    width: 100%;
+    font-size: clamp(35px,10vw,50px);
+    font-weight: bolder;
+}
+
+form .input_login{
+    outline: none;
+    border: none;
+    height: 50px;
+    width: 80%;
+    margin: 20px;
+    padding-left: 12px;
+    padding-right: 12px;
+    color: #666666;
+    font-size: medium;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    box-shadow: 0 0 1px rgba(0, 0, 0, .9);
+}
+form .lbl1 {
+    position: relative;
+    width: 100%;
+    padding-left: 15%; 
+    top: 14px;
+    font-weight: 600;
+}
+form .lbl2 {
+    position: relative;
+    width: 100%;
+    padding-left: 15%; /* umay sa adjustment */
+    top: 14px;
+    font-weight: 600;
+}
+
+form button{
+    width: 75%;
+    height: 40px;
+    border-radius: 30px;
+    background: linear-gradient(to right, rgb(157, 157, 255),rgb(255, 95, 255),rgb(151, 255, 151));
+    border: none;
+    font-size: medium;
+    font-weight: bolder;
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+    animation: colored 0.8s infinite;
+    cursor: pointer;
+    margin-top: 15px;
+}
+form button:active{
+    transform: scale(.98);
+    transition: .1s;
+}
+@keyframes colored {
+    0%{
+        background: linear-gradient(to right, rgb(157, 157, 255),rgb(255, 95, 255),rgb(151, 255, 151));
+    }50%{
+        background: linear-gradient(to right, rgb(151, 255, 151),rgb(157, 157, 255),rgb(255, 95, 255));
+    }100%{
+        background: linear-gradient(to right, rgb(255, 95, 255),rgb(157, 157, 255),rgb(151, 255, 151));
+    }
+}
+
+form p{
+    position: absolute;
+    bottom: 0;
+    font-size: medium;
+}
+
+form .toSignup, .toSignin{
+    margin-left: 5px;
+    font-weight: bold;
+    color: red;
+    text-decoration: none;
+}
+
+
+#checkCreate, #checkUsers{
+    display: none;
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+
+    background-color: #d2665a7e;
+    font-weight: bolder;
+    font-size: 18px;
+    color: #B82132;
+    letter-spacing: 1.3px;
+    padding: 5px 8px;
+}
+#checkCreate{
+    position: absolute;
+    top: 21%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@media (max-width: 480px){
+    nav h1{
+        display: none;
+    }
+    .logo{
+        height: 70%;
+        width: auto;
+    }
+
+    .signup, .signin{
+        height: 100vh;
+        width: 100vw;
+        border-radius: 0%;
+    }
+}
+
+@media (min-width: 2560px) {
+    .signin, .signup{
+        height: 1125px;
+        width: 725px;
+    }
+
+    form{
+        height: 100%;
+    }
+    form h2{
+        margin-top: -15px;
+        font-size: 100px;
+        margin-bottom: 15px;
+    }
+    form .lbl1, .lbl2{
+        font-size: 30px;
+    }
+    form .input_login{
+        padding: 25px;
+        font-size: 25px;
+    }
+    form .checkBoxs{
+        padding: 100px;
+        font-size: 50px;
+        transform: scale(2);
+        
+    }
+    form .lbl-checkBox{
+        font-size: 25px;
+        top: -23px;
+    }
+
+    form .forgotPass{
+        font-size: 25px;
+        top: -53px;
+    }
+    form button{
+        height: 90px;
+        font-size: 35px;
+    }
+    form p{
+        font-size: 30px;
+    }
+    .bottom-p{
+        margin-top: 10%;
+    }
+
+    form img{
+        height: 75px;
+        padding: 0 15px;
+    }
+    .close{
+        height: 30px;
+    }
+}
+
