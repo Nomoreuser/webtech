@@ -87,7 +87,7 @@ document.getElementById("Sign-up").addEventListener("submit", function(event) {
         formData.append('username', username);
         formData.append('password', password);
 
-        fetch('signup.php', {
+        fetch('php/signup.php', {
             method: 'POST',
             body: formData
         })
@@ -107,7 +107,7 @@ document.getElementById("Sign-up").addEventListener("submit", function(event) {
         });
     }else{
         document.getElementById("checkCreate").style.display="block";
-        document.getElementById("checkCreate").innerHTML=`🔴 Confirm password not match`
+        document.getElementById("checkCreate").innerHTML=`🔴 Confirm password not match *`
     }
 });
 
@@ -123,7 +123,7 @@ document.getElementById("Log-in").addEventListener("submit", function(event){
     fD.append('username', username);
     fD.append('password', password);
 
-    fetch('login.php', {
+    fetch('php/login.php', {
         method: 'POST',
         body: fD
     })
