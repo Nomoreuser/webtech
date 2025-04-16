@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 $servername = "localhost"; // Database server
 $username = "root"; // Database username
 $password = ""; // Database password
@@ -22,9 +22,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Checking the submit username if have equal to the users username 
     $result = $conn->query("SELECT * FROM users WHERE username = '$user' AND password='$pass'");
 
-    
-    if ($result->num_rows > 0) {
-        echo json_encode(["status" => "success"]);
+    $row=$result->fetch_assoc();
+
+    if ($result->num_rows == 1) {
+        $_SESSION['uId'] = $row['id'];
+        $_SESSION['username'] = $row['username'];
+        echo json_encode(["status" => "success","msg" =>"{$_SESSION['uId']}{$_SESSION['username']}"]);
     }else{
         echo json_encode(["status" => "failed", "msg" => "Wrong username or password *"]);
     }

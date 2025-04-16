@@ -62,15 +62,15 @@ function goLogin(){
 }
 
 document.addEventListener('input', ()=>{
-    var password = document.getElementById("signupPassword").value;
-    var confirmPass = document.getElementById("confirmPass").value;
+    let password = document.getElementById("signupPassword").value;
+    let confirmPass = document.getElementById("confirmPass").value;
 
     if(password == confirmPass && password !=""){
-        var confirmPass = document.getElementById("confirmPass").style.outline="1px solid green";
+        document.getElementById("confirmPass").style.outline="1px solid green";
     }else if(confirmPass.length >= password.length && password !=""){
-        var confirmPass = document.getElementById("confirmPass").style.outline="1px solid red";
+        document.getElementById("confirmPass").style.outline="1px solid red";
     }else{
-        var confirmPass = document.getElementById("confirmPass").style.outline="none";
+        document.getElementById("confirmPass").style.outline="none";
     }
 })
 
@@ -78,12 +78,12 @@ document.addEventListener('input', ()=>{
 document.getElementById("Sign-up").addEventListener("submit", function(event) {
     event.preventDefault();
 
-    var username = document.getElementById("signupUsername").value;
-    var password = document.getElementById("signupPassword").value;
-    var confirmPass = document.getElementById("confirmPass").value;
+    let username = document.getElementById("signupUsername").value;
+    let password = document.getElementById("signupPassword").value;
+    let confirmPass = document.getElementById("confirmPass").value;
     
     if(password == confirmPass){
-        var formData = new FormData();
+        let formData = new FormData();
         formData.append('username', username);
         formData.append('password', password);
 
@@ -116,10 +116,10 @@ document.getElementById("Sign-up").addEventListener("submit", function(event) {
 document.getElementById("Log-in").addEventListener("submit", function(event){
     event.preventDefault();
 
-    var username = document.getElementById("loginUsername").value;
-    var password = document.getElementById("loginPassword").value;
+    let username = document.getElementById("loginUsername").value;
+    let password = document.getElementById("loginPassword").value;
 
-    var fD = new FormData();
+    let fD = new FormData();
     fD.append('username', username);
     fD.append('password', password);
 
@@ -134,7 +134,8 @@ document.getElementById("Log-in").addEventListener("submit", function(event){
             document.getElementById("checkUsers").innerHTML = `🚫 ${data.msg}`;
         }
         if(data.status === "success"){
-            window.location.href = "../Working/index.php";
+            alert(data.msg);
+            window.location.href = "../dash/index.php";
         }
     });
 });

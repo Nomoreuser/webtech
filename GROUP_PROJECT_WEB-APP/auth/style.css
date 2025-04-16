@@ -106,7 +106,6 @@ hr{
 /* sign in container & sign up */
 .signin, .signup{
     border-radius: 1rem;
-    
     width: 425px;
     background-color: rgb(245, 241, 241);
     overflow: hidden;
@@ -248,7 +247,8 @@ form button:active{
 }
 
 form p{
-    position: absolute;
+    margin-top: 10%;
+    position: relative;
     bottom: 20px;
     font-size: medium;
 }
@@ -286,6 +286,12 @@ form .toSignup, .toSignin{
         height: 100vh;
         width: 100vw;
         border-radius: 0%;
+    }
+    form{
+        height: fit-content;
+        position: relative;
+        top: 35%;
+        transform: translateY(-50%);
     }
 }
 
@@ -329,11 +335,8 @@ form .toSignup, .toSignin{
         height: 90px;
         font-size: 35px;
     }
-    form p{
-        font-size: 30px;
-    }
-    .bottom-p{
-        margin-top: 10%;
+    form .spaced{
+        height: 0px;
     }
 
     form img{

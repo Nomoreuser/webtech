@@ -50,7 +50,7 @@
                 <input class="input_login" name="lpassword" type="password" id="loginPassword" required>
 
                 <button type="submit">Login</button>
-                <div style="height: 100px;"></div>
+                <!-- <div style="height: 100px;"></div> -->
                 <p>Don't hava an account?<span class="toSignup" id="toSignup">Sign up</span></p>
             </form>
 
@@ -73,7 +73,7 @@
                 <label class="lbl2" for="password">Confirm Password</label>
                 <input class="input_login" name="password" type="password" id="confirmPass" required>
                 <button type="submit">Sign up</button>
-                <div style="height: 100px;"></div>
+                <!-- <div class="spaced" style="height: 30px;"></div> -->
                 <p>Already have account?<span class="toSignin" id="toLogin">Log In</span></p>
             </form>
         </div>
