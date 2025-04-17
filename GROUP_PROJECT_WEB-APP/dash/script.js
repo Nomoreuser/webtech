@@ -94,43 +94,82 @@ console.log(dateCreated);
 document.getElementById("submitQuote").addEventListener('click', (event) => {
   event.preventDefault();
 
-  let quoteTitle = document.getElementById("quoteTitle").value;
-  let quoteInp = document.getElementById("quoteInp").value;
-  if (/^[“‘"'"].*[”’"'"]$/.test(quoteInp) || /^[“‘"'"].*[”’"'"]$/.test(quoteTitle)) {
-    quoteInp = quoteInp.slice(1, -1);
-    quoteTitle = quoteTitle.slice(1, -1);
+  if(statusQuote == "addQuote"){
+    let quoteTitle = document.getElementById("quoteTitle").value;
+    let quoteInp = document.getElementById("quoteInp").value;
+    // if (/^[“‘"'"].*[”’"'"]$/.test(quoteInp)) {
+    //   quoteInp = quoteInp.slice(1, -1);
+    // };
+    // if (/^[“‘"'"].*[”’"'"]$/.test(quoteTitle)) {
+    //   quoteTitle = quoteTitle.slice(1, -1);
+    // };
+
+    if(quoteTitle.trim() === ""){
+      quoteTitle = "Untitled Quote";
+    };
+
+    let fd = new FormData();
+    fd.append('action', 'addQuote');
+    fd.append("title", quoteTitle);
+    fd.append("text", quoteInp);
+    fd.append("date", dateCreated);
+
+    fetch('php/addDelete.php', {
+      method: "POST",
+      body: fd
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log("Response:", data);
+      if (data.status == "fail" || data.status == "error") {
+        alert(data.msg);
+      }
+      if (data.status == "success") {
+        // alert(data.msg);
+        Quotes();
+      }
+    })
+    .catch(error => console.error("Fetch Error:", error));
+
+  }else if(statusQuote == "editQuote"){
+
+    let quoteTitle = document.getElementById("quoteTitle").value;
+    let quoteInp = document.getElementById("quoteInp").value;
+    // if (/^[“‘"'"].*[”’"'"]$/.test(quoteInp)) {
+    //   quoteInp = quoteInp.slice(1, -1);
+    // };
+    // if (/^[“‘"'"].*[”’"'"]$/.test(quoteTitle)) {
+    //   quoteTitle = quoteTitle.slice(1, -1);
+    // };
+
+    if(quoteTitle.trim() === ""){
+      quoteTitle = "Untitled Quote";
+    };
+
+    console.log(tId+" "+quoteTitle+" "+quoteInp);
+
+    let fd = new FormData();
+    fd.append('action', 'editQuote');
+    fd.append('id', tId);
+    fd.append('qtitle', quoteTitle);
+    fd.append('qtext', quoteInp);
+
+    fetch('php/addDelete.php',{
+      method: 'POST',
+      body: fd
+    })
+    .then(response => response.json())
+    .then(data => {
+      if(data.status == 'success'){
+        // alert(data.msg);
+        Quotes();
+      }
+    });
   };
 
-  if(quoteTitle.trim() === ""){
-    quoteTitle = "Untitled Quote";
-  };
-
-  let fd = new FormData();
-  fd.append('action', 'addQuote');
-  fd.append("title", quoteTitle);
-  fd.append("text", quoteInp);
-  fd.append("date", dateCreated);
-
-  fetch('php/addDelete.php', {
-    method: "POST",
-    body: fd
-  })
-  .then(response => response.json())
-  .then(data => {
-    console.log("Response:", data);
-    if (data.status == "fail" || data.status == "error") {
-      alert(data.msg);
-    }
-    if (data.status == "success") {
-      // alert(data.msg);
-      document.getElementById("popQuote").style.display = "none";
-      document.getElementById("quoteInp").value="";
-      document.getElementById("quoteTitle").value="";
-
-      Quotes();
-    }
-  })
-  .catch(error => console.error("Fetch Error:", error));
+  document.getElementById("popQuote").style.display = "none";
+  document.getElementById("quoteInp").value="";
+  document.getElementById("quoteTitle").value="";
 }); 
 
 function loadQuotes(){
@@ -146,7 +185,7 @@ function loadQuotes(){
       quotes.innerHTML = "";
       data.dquotes.reverse().forEach(quote => {
         quotes.innerHTML += `
-          <div class="quoteList" onclick="openQuote(${quote.id},'${quote.title}','${quote.content}','${quote.dcreate}')">
+          <div class="quoteList" data-id="${quote.id}" data-title="${escapeHTML(quote.title)}"data-content="${escapeHTML(quote.content)}" data-date="${quote.dcreate}"onclick="openQuote(this)">
             <div class="titleDate">
               <h1>${quote.title}</h1>
               <small>${quote.dcreate}</small>
@@ -181,9 +220,22 @@ function delQuote(event,id){
       alert(data.msg);
     };
   });
-}
+};
+function escapeHTML(str){
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+};
 
-function openQuote(id, title,cc,dc){
+function openQuote(el){
+  const id = el.dataset.id;
+  const title = el.dataset.title;
+  const cc = el.dataset.content;
+  const dc = el.dataset.date;
+
   console.log(id+cc+title+dc);
 
   let a = document.getElementById("qbox");
@@ -196,7 +248,7 @@ function openQuote(id, title,cc,dc){
       style="width: 75px; height: 75px; position: absolute;top:0; border-radius:10px" loop autoplay></dotlottie-player>
 
     <div style="position:absolute; right: 20px;top:-40px; padding: 10px; background-color:rgba(120, 152, 177, 0.79); display: flex;align-items: center;gap:10px;border-radius:25px 25px;">
-      <svg class="qqq" onclick="editQuote(${id})" xmlns="http://www.w3.org/2000/svg" style="background-color:rgba(0, 0, 0, 0.87);border-radius:100%;padding:3.5px;" width="24" height="24" viewBox="-5 -5 34 34" fill="black" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil-icon lucide-pencil"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg>
+      <svg class="qqq" onclick="editQuote(${id},'${title}','${cc}')" xmlns="http://www.w3.org/2000/svg" style="background-color:rgba(0, 0, 0, 0.87);border-radius:100%;padding:3.5px;" width="24" height="24" viewBox="-5 -5 34 34" fill="black" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil-icon lucide-pencil"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg>
       <dotlottie-player class="qqq" id="dellot"; onclick="delQuote(event,${id})" src="https://lottie.host/45bf31cf-8b69-4dcc-8219-ab762867d263/2EAsmMeil5.lottie" background="transparent" speed="1"
         style="width: 50px; height: 50px;"></dotlottie-player>
       <svg class="qqq" onclick="document.getElementById('qbg').style.display='none'" xmlns="http://www.w3.org/2000/svg" style="background-color:rgba(255, 93, 93, 0.96);border-radius:15px;padding:3.5px;" width="24" height="24" viewBox="-5 -5 34 34" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-x-icon lucide-circle-x"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
@@ -205,21 +257,31 @@ function openQuote(id, title,cc,dc){
       <div style="text-align:right;margin: 20px 0">
         <small style="font-size:14px; padding: 10px">${dc}</small>
       </div>
-      <p style="word-break: break-word;">“ ${cc} ”</p>
+      <p style="word-break: break-word;">${cc}</p>
       <p style="margin: 40px 0 0 0;">${title}</p>
     </div>
     <dotlottie-player src="https://lottie.host/2bf652cf-ff04-4777-a0e2-fee9fae51ebc/GWVTTyjlWc.lottie" background="transparent" speed="3" 
       style="width: 75px; height: 75px; position: absolute;bottom:-35px;right:25px;transform:rotate(-180deg);background-color:rgba(130, 255, 188, 0.91) ;border-radius:10px" loop autoplay></dotlottie-player>
     `;
 };
-function editQuote(id){
+let tId;
+function editQuote(id,title,cc){
+  tId = id;
   document.getElementById("qbg").style.display="none";
   addQuotes();
   statusQuote = "editQuote";
-  console.log(statusQuote);
+  console.log(statusQuote+" "+tId);
+
+
+  document.getElementById("quoteTitle").value = title;
+  document.getElementById("quoteInp").value = cc;
+
 }
 
 
+
+
+// -=0-=00--0=-------------0-===0-=00==0--=-=0-00=0-0=-0-=0-=0-=0-=0-=0-=0
 document.getElementById("submitLink").addEventListener('click', function(event){
   event.preventDefault();
 

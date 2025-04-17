@@ -38,6 +38,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         exit;
     }
+
+    if($_POST['action'] == 'editQuote'){
+        $id = $_POST['id'];
+        $title= $_POST['qtitle'];
+        $text = $_POST['qtext'];
+
+        $sql = $conn->prepare("UPDATE quotes SET title =?,content=? WHERE userId=? AND id=?");
+        $sql->bind_param("ssii",$title,$text,$suId,$id);
+        $sql->execute();
+
+        if($sql->execute()){
+            echo json_encode(['status'=>'success','msg'=>'..|.. edited']);
+        }else{
+            echo json_encode(['status'=>'success','msg'=>'..|.. not edited']);
+        }
+        exit;
+    }
     //=============-=-=0-=-========-=====================0-0=-===========
 
     if($_POST["action"] == "addLink"){
