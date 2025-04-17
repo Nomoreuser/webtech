@@ -252,6 +252,9 @@ section{
 .titleDate h1{
   margin: 0 0;
 }
+.quoteList svg:hover{
+  background-color: rgba(255, 119, 119, 0.875);
+}
 
 
 /* = = == = == -=- =- =Show when clicked New Links -= -= - =- =- = - = */
@@ -455,7 +458,7 @@ section{
   width: 650px; 
   height: fit-content; 
   padding: 50px 25px;
-  box-shadow: 5px 5px rgba(0, 0, 0, 0.928);
+  box-shadow: 5px 5px .5px rgba(0, 0, 0, 0.928);
   border-radius: 15px;
   background-color: #FFECDB;
   position: relative;
@@ -463,8 +466,9 @@ section{
   left: 50%;
   transform: translate(-50%,-50%);
 }
-
-
+.qqq:hover{
+  transform: scale(1.1);
+}
 
 
 
