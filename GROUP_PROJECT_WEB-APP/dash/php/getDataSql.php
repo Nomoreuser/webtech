@@ -13,6 +13,12 @@ $uId = $_SESSION['uId'];
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
+    if($_POST['action'] == 'logOut'){
+        echo json_encode(['status' => 'success', 'msg'=>'u logout ..!..']);
+        $_SESSION['uId'] = null;
+        exit;
+    }
+
     if($_POST['action'] == 'addQuote'){
         $sql = "SELECT * FROM quotes WHERE userId =?";
         $ress = $conn->prepare($sql);

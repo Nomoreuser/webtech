@@ -103,7 +103,7 @@
                     </div>
 
                 </div>
-                <div id="LogOut" style="text-align: center; font-size: 25px; padding: 20px 0; border-top: 1px solid white;">
+                <div id="LogOut" style="text-align: center; font-size: 25px; padding: 20px 0; border-top: 1px solid white;font-weight:bolder; color:rgba(168, 168, 168, 0.88);">
                     Log out
                 </div>
             </nav>
@@ -161,7 +161,7 @@
                 <textarea name="" id="quoteInp" placeholder="text....."></textarea>
             </div>
             <div class="input-buttons">
-                <button id="cancel">Cancel</button>
+                <button id="cancel" type="button">Cancel</button>
                 <button id="submitQuote" disabled >Submit</button>
             </div>
         </form>
