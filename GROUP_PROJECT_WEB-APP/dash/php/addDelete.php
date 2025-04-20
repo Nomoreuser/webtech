@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if(!isset($_POST['action'])){
         exit;
     }
-    // -================-=======================-0-=-===============-=-=
+    // Quote
     if($_POST['action'] == 'addQuote'){
         $qtitle = $_POST['title'];
         $qtext = $_POST['text'];
@@ -22,9 +22,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     if($_POST['action'] == 'dltQuote'){
         $id = $_POST['id'];
-        // $id = (int)$id;
-        // $suId = (int)$suId;
-
 
         $sql = "DELETE FROM quotes WHERE id = ? AND userId =?";
         $ress = $conn->prepare($sql);
@@ -55,8 +52,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         exit;
     }
-    //=============-=-=0-=-========-=====================0-0=-===========
 
+    // Link
     if($_POST["action"] == "addLink"){
         $name =$_POST['name'];
         $link =$_POST['url'];
@@ -96,6 +93,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }else{
             echo json_encode(["status" => "success", "msg" => "bob nd"]);
         }
+        exit;
+    }
+    // Todo
+    if($_POST['action'] == 'addTodo'){
+        $title = $_POST['title'];
+        $desc = $_POST['descr'];
+        $due = $_POST['due'];
+        $status = $_POST['status'];
+        $dcreate = $_POST['dcreate'];
+
+        $sql = $conn->prepare("INSERT INTO todos(userId,title,descript,dueDate,status,dcreated) VALUES(?,?,?,?,?,?)");
+        $sql->bind_param("isssss", $suId, $title, $desc, $due, $status, $dcreate);
+        $sql->execute();
+
+        echo json_encode(["status" => "success", "msg" => "Todo addeds"]);
+        
+        // echo json_encode(["status" => "success", "msg" => "i reach this Post [0 _ 0] $title $desc $due $status $dcreate"]);
         exit;
     }
 

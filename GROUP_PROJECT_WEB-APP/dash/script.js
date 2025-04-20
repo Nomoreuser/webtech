@@ -15,7 +15,7 @@ document.addEventListener('click', function(event){
     document.getElementById("addList").style.display="none";
   }
 
-  if(event.target.matches("#popQuote,#popLink,#popTodo") || event.target.matches("#cancel,#cancelLink")){
+  if(event.target.matches("#popQuote,#popLink,#popTodo") || event.target.matches("#cancel,#cancelLink,#cancelTask")){
     //quote
     document.getElementById("popQuote").style.display = "none";
     document.getElementById("quoteInp").value="";
@@ -26,6 +26,8 @@ document.addEventListener('click', function(event){
     document.getElementById("linkURL").value="";
     //todo
     document.getElementById("popTodo").style.display="none";
+    document.getElementById("submitTodo").disabled = true;
+    document.getElementById("submitTodo").style.cssText=`background-color: #2A2A2A; color: #d3d7d9;`;
   }
 
   if(event.target === document.getElementById("qbg")){
@@ -33,7 +35,8 @@ document.addEventListener('click', function(event){
   }
 });
 
-let statusQuote = "";
+let statusQuote = ""; //on editing or adding new to magamit ulit #popQuote
+
 function addQuotes() {
   statusQuote = "addQuote";
   document.getElementById("submitQuote").style.color=" #565656c6";
@@ -52,6 +55,9 @@ function addLinks(){
 
 function addTodo(){
   document.getElementById("popTodo").style.display="block";
+  document.getElementById("todoDate").value = dateCreated;
+  document.getElementById("todoTitle").value= "";
+  document.getElementById("desc").value ="";
 }
 
 
@@ -75,6 +81,24 @@ document.addEventListener('input', ()=>{
     document.getElementById("submitLink").style.color=" #565656c6";
     document.getElementById("submitLink").disabled=true;
   }
+
+  //kkk sugod raaaaa
+
+  let indate = document.getElementById("todoDate").value;
+  let ind = new Date(indate);
+  let td = new Date(dateCreated);
+
+  if(ind >= td && document.getElementById("todoTitle").value.trim() != ""){
+    document.getElementById("todoDate").style.backgroundColor = "rgba(119, 255, 201, 0.83)";
+    // console.log( ind +" >= "+ td)
+    document.getElementById("submitTodo").disabled = false;
+    document.getElementById("submitTodo").style.cssText=`background-color:rgb(93, 93, 93); color:rgb(152, 255, 158);`;
+  }else{
+    document.getElementById("todoDate").style.backgroundColor = "rgba(255, 119, 126, 0.83)";
+    document.getElementById("submitTodo").disabled = true;
+    document.getElementById("submitTodo").style.cssText=`background-color: #2A2A2A; color: #d3d7d9;`;
+  }
+
 });
 
 
@@ -162,7 +186,7 @@ document.getElementById("submitQuote").addEventListener('click', (event) => {
 
 function loadQuotes(){
   let fd = new FormData();
-  fd.append("action", "addQuote");
+  fd.append("action", "getQuote");
   fetch('php/getDataSql.php',{
     method: "POST",
     body: fd
@@ -315,7 +339,7 @@ document.getElementById("submitLink").addEventListener('click', function(event){
 
 function loadLinks(){
   let fd = new FormData();
-  fd.append("action", "addLink");
+  fd.append("action", "getLink");
   fetch('php/getDataSql.php',{
     method: "POST",
     body: fd
@@ -397,6 +421,71 @@ function linkClick(i,visit,id){
   window.open(i,'_blank');
 }
 
+///
+flatpickr("#todoDate",{
+  dateFormat: "m/d/Y"
+});
+
+document.getElementById("submitTodo").addEventListener('click', (event)=>{
+  event.preventDefault();
+ 
+  let title = document.getElementById("todoTitle").value;
+  let descript = document.getElementById("desc").value;
+  let due = document.getElementById("todoDate").value;
+  alert(title+descript+due);
+
+  let fd = new FormData();
+  fd.append('action', 'addTodo');
+  fd.append('title', title);
+  fd.append('descr', descript);
+  fd.append('due', due);
+  fd.append('status', 'inprogress');
+  fd.append('dcreate', dateCreated);
+  fetch('php/addDelete.php', {
+    method: 'POST',
+    body: fd
+  })
+  .then(response => response.json())
+  .then(data => {
+    if(data.status == "success"){
+      alert(data.msg);
+    };
+  });
+});
+
+
+function loadTodo(){
+  let fd = new FormData();
+  fd.append('action', 'getTodo');
+  fd.append('dToday', dateCreated);
+  fetch('php/getDataSql.php',{
+    method: 'POST',
+    body: fd
+  })
+  .then(response => response.json())
+  .then(data => {
+    document.getElementById("storedInprogress").innerHTML = "";
+
+    data.today.reverse().forEach(td =>{
+      console.log(td.dueDate);
+    });
+
+    data.inprogress.reverse().forEach(inprog =>{
+      console.log(inprog.title);
+      document.getElementById("storedInprogress").innerHTML += 
+      `<div style="background-color: white;padding: 10px;box-sizing: border-box;">
+        <h4>${inprog.dueDate}</h4>
+        <h1 style="margin: 10px 0">${inprog.title}</h1>
+        <p>${inprog.descript}</p>
+      </div><br>`;
+    });
+  });
+};
+
+
+
+
+
 /// 
 document.getElementById("LogOut").addEventListener('click', ()=>{
 
@@ -410,8 +499,8 @@ document.getElementById("LogOut").addEventListener('click', ()=>{
   .then(data =>{
     console.log(data);
     if(data.status == 'success'){
-      alert(data.msg);
       window.location.href="../auth/index.php";
+      alert(data.msg);
     };
   });
 });
@@ -431,6 +520,7 @@ function Links(){
 }
 function Todo(){
   handleShow("To-do",tasks,quotes,links)
+  loadTodo();
 }
 
 function handleShow(setLabel,show,hide,hide1){

@@ -19,7 +19,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         exit;
     }
 
-    if($_POST['action'] == 'addQuote'){
+    if($_POST['action'] == 'getQuote'){
         $sql = "SELECT * FROM quotes WHERE userId =?";
         $ress = $conn->prepare($sql);
         $ress->bind_param('i', $uId);
@@ -36,7 +36,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         exit;
     }
 
-    if($_POST['action'] == "addLink"){
+    if($_POST['action'] == "getLink"){
         $sql = $conn->prepare("SELECT * FROM links WHERE userId = ?");
         $sql->bind_param("i", $uId);
         $sql->execute();
@@ -50,7 +50,33 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         echo json_encode(["status" => "success", "dlinks" => $linksData]);
         exit;
     }
-    echo json_encode(["status" => "success", "dlinks" => "ahahhaha"]);
+
+    if($_POST['action'] == 'getTodo'){
+        $today = $_POST['dToday'];
+        $sql = $conn->prepare("SELECT * FROM todos WHERE userId=?");
+        $sql->bind_param("i",$uId);
+        $sql->execute();
+
+        $result = $sql->get_result();
+        $inprogress = [];
+        $completed = [];
+        $failed = [];
+        $todayTodo =[];
+
+        while($row=$result->fetch_assoc()){
+            if($row['status'] == 'inprogress' && $row['dueDate'] !== $today){
+                $inprogress[] = $row;
+            };
+            if($row['dueDate'] == $today){
+                $todayTodo[] = $row;
+            };
+        };
+
+        echo json_encode(['inprogress' => $inprogress, 'today' => $todayTodo]);
+        exit;
+    }
+
+    echo json_encode(["status" => "success", "msg" => "ahahhaha"]);
     exit;
 }
 exit;

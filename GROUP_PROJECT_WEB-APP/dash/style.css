@@ -380,18 +380,19 @@ section{
 }
 .todo{
   margin: 20px;
+  padding: 30px;
   background-color: #B0B0B0;
-  height: 100;
+  min-height: fit-content;
+  max-height: 90%;
 }
 .todo h1{
-  text-align: center;
+  margin-bottom: 20px;
 }
 
 /* -==-=-= -= Show when click new Todo for input -= = =0-0- 0-=0= */
 .todoBox{
   box-sizing: border-box;
   background-color: #d3d7d9;
-  height: 550px;
   width: 500px;
   padding: 20px;
   border-radius: 10px;
@@ -417,8 +418,9 @@ section{
   margin: 10px 0 20px 0;
   outline: none;
   padding: 10px 20px;
-  width: 90%;
+  width: 100%;
   border: 1px solid rgb(138, 138, 138);
+  background-color: #d3d7d9;
   border-radius: 8px;
   font-size: 18px;
   color: #3d3d3d;
@@ -426,7 +428,7 @@ section{
 .todoBox span{
   color: red;
 }
-.todoBox button{
+.todoBox #submitTodo{
   margin-top: 30px;
   padding: 15px;
   border-radius: 8px;

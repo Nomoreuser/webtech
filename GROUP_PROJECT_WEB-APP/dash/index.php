@@ -19,7 +19,7 @@
             display:flex;
             animation: down .5s ease-out;
         }
-        h3{margin: 0;color: #88304E;}
+        .alertBox h3{margin: 0;color: #88304E;}
         @keyframes down {
             0% {
                 top: -20%;
@@ -58,6 +58,9 @@
     <link rel="icon" type="image/png" href="favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 </head>
 <body>
 
@@ -81,7 +84,7 @@
                     <div id="addList">
                         <div onclick="addQuotes()">📝  New Quotes</div>
                         <div onclick="addLinks()" id="addLinks">🔗  New Links</div>
-                        <div onclick="addTodo()">✅  New To-do</div>
+                        <div onclick="addTodo()">✅  New To Do</div>
                     </div>
                     <div style="display: none;">hahahahahahha</div>
                     
@@ -99,7 +102,7 @@
                     </div>
                     <div class="button links" onclick="Todo()">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-todo"><rect x="3" y="5" width="6" height="6" rx="1"/><path d="m3 17 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/></svg>
-                        <p>To-do</p>
+                        <p>To Do</p>
                     </div>
 
                 </div>
@@ -130,18 +133,21 @@
 
                     <section id="forTodo">
                         <div class="gridTodo">
-                            <div class="todo" id="ongoing">
-                                <h1>Ongoing</h1>
+                            <div class="todo" id="inprogress">
+                                <h1>In Progress</h1>
+                                <div id="storedInprogress"></div>
                             </div>
                             <div class="todo" id="completed">
                                 <h1>Completed</h1>
+                                <div id="storedCompleted"></div>
                             </div>
                             <div class="todo" id="failed">
                                 <h1>Failed</h1>
+                                <div id="storedFailed"></div>
                             </div>
                         </div>
-                        
                     </section>
+
                 </div>
                 
             </main>
@@ -185,15 +191,15 @@
     <div id="popTodo" class="pop">
             
         <form class="todoBox">
-            <div id="cancelTask"><img src="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/2716.png" alt=""></div>
+            <div><img src="https://images.emojiterra.com/google/noto-emoji/unicode-15/color/512px/2716.png" alt=""  id="cancelTask"></div>
             <h1>Add Task</h1>
             <label>Title <span>*</span></label>
-            <input type="text" id="todoTitle">
+            <input type="text" id="todoTitle" required>
             <label>Description (Optional)</label>
             <input type="text" id="desc">
             <label>Deadline <span>*</span></label>
-            <input type="date">
-            <button disabled>Add Task</button>
+            <input type="text" id="todoDate">
+            <button id="submitTodo" disabled>Add Task</button>
         </form>
 
     </div>
