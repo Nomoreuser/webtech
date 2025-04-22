@@ -114,7 +114,6 @@
 
             <main>
                 
-                <div style="height: 100vh; width: 100%; background-color: #1d1d1d;">
                     <div class="lbl">
                         <h1 id="labelC"></h1>
                     </div>
@@ -134,12 +133,26 @@
                     <section id="forTodo">
                         <div class="gridTodo">
                             <div class="todo" id="inprogress">
-                                <h1>In Progress</h1>
-                                <div id="storedInprogress"></div>
+                                <h1 style="font-size: 35px;margin-bottom: 20px;color:rgb(255, 136, 0);">In Progress</h1>
+                                <div class="scroll">
+                                    <div id="todayDue" style="background-color:rgba(149, 255, 168, 0.86);padding: 0 10px;border-radius: 15px">
+                                        <h1 id="lblToday" style="color:rgb(47, 47, 47); padding: 10px 0">No due today!</h1>
+                                        <div id="storedTodayDue" style="">
+
+                                        </div>
+                                    </div>
+                                    <div id="storedInprogress">
+                                        
+                                    </div>
+                                </div>
                             </div>
                             <div class="todo" id="completed">
-                                <h1>Completed</h1>
-                                <div id="storedCompleted"></div>
+                                <h1 style="font-size: 35px;margin-bottom: 20px;color:rgb(78, 241, 116);">Completed</h1>
+                                <div class="scroll">
+                                    <div id="storedCompleted">
+
+                                    </div>
+                                </div>
                             </div>
                             <div class="todo" id="failed">
                                 <h1>Failed</h1>
@@ -148,13 +161,10 @@
                         </div>
                     </section>
 
-                </div>
                 
             </main>
         </div>
 
-        
-        
     </div>
 
 

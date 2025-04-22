@@ -112,6 +112,44 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // echo json_encode(["status" => "success", "msg" => "i reach this Post [0 _ 0] $title $desc $due $status $dcreate"]);
         exit;
     }
+    if($_POST['action'] == 'updateTodo'){
+        $id = $_POST['id'];
+        $status = $_POST['status'];
+
+        $sql = $conn->prepare("UPDATE todos SET status=? WHERE userId=? AND id=?");
+        $sql->bind_param("sii", $status, $suId, $id);
+        $sql->execute();
+
+        if($sql->execute()){
+            echo json_encode(['msg' => 'olol kauuu']);
+        }
+        exit;
+    }
+    if($_POST['action'] == 'delTodo'){
+        $id = $_POST['id'];
+
+        $sql = $conn->prepare("DELETE FROM todos WHERE userId=? AND id=?");
+        $sql->bind_param("ii", $suId, $id);
+
+        if($sql->execute()){
+            echo json_encode(['msg' => 'dell']);
+        }
+        exit;
+    }
+    if($_POST['action'] == 'editTodo'){
+        $id = $_POST['id'];
+        $title = $_POST['title'];
+        $descr = $_POST['descr'];
+        $due = $_POST['due'];
+
+        $sql = $conn->prepare("UPDATE todos SET title=?, descript=?, dueDate=? WHERE userId=? AND id=?");
+        $sql->bind_param("sssii", $title, $descr, $due, $suId, $id);
+
+        if($sql->execute()){
+            echo json_encode(['msg' => 'eyy!!! im here']);
+        }
+        exit;
+    }
 
     echo json_encode(["status" => "fail", "msg" => "Invalid request"]);
     exit;

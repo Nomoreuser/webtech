@@ -54,6 +54,7 @@ function addLinks(){
 }
 
 function addTodo(){
+  statusTodo = 'addTodo';
   document.getElementById("popTodo").style.display="block";
   document.getElementById("todoDate").value = dateCreated;
   document.getElementById("todoTitle").value= "";
@@ -158,11 +159,11 @@ document.getElementById("submitQuote").addEventListener('click', (event) => {
       quoteTitle = "Untitled Quote";
     };
 
-    console.log(tId+" "+quoteTitle+" "+quoteInp);
+    console.log(qId+" "+quoteTitle+" "+quoteInp);
 
     let fd = new FormData();
     fd.append('action', 'editQuote');
-    fd.append('id', tId);
+    fd.append('id', qId);
     fd.append('qtitle', quoteTitle);
     fd.append('qtext', quoteInp);
 
@@ -209,12 +210,16 @@ function loadQuotes(){
   });
 };
 
+let dltstatus;
 function delQuote(event,id){
   event.stopPropagation();
-  document.getElementById("dellot").play();
-  document.getElementById("dellot").addEventListener('complete', ()=>{
-    document.getElementById("qbg").style.display="none";
-  },{once:true});
+
+  if(dltstatus == 'indlt'){
+    document.getElementById("dellot").play();
+    document.getElementById("dellot").addEventListener('complete', ()=>{
+      document.getElementById("qbg").style.display="none";
+    },{once:true});
+  }
 
   let fd = new FormData();
   fd.append('action', 'dltQuote');
@@ -244,6 +249,7 @@ function escapeHTML(str){
 };
 
 function openQuote(el){
+  dltstatus = 'indlt';
   let id = el.dataset.id;
   let title = el.dataset.title;
   let cc = el.dataset.content;
@@ -279,13 +285,13 @@ function openQuote(el){
       style="width: 75px; height: 75px; position: absolute;bottom:0px;right:25px;transform:rotate(-180deg);" loop autoplay></dotlottie-player>
     `;
 };
-let tId;
+let qId;
 function editQuote(id,title,cc){
-  tId = id;
+  qId = id;
   document.getElementById("qbg").style.display="none";
   addQuotes();
   statusQuote = "editQuote";
-  console.log(statusQuote+" "+tId);
+  console.log(statusQuote+" "+qId);
 
 
   document.getElementById("quoteTitle").value = title;
@@ -428,29 +434,53 @@ flatpickr("#todoDate",{
 
 document.getElementById("submitTodo").addEventListener('click', (event)=>{
   event.preventDefault();
- 
+
   let title = document.getElementById("todoTitle").value;
   let descript = document.getElementById("desc").value;
   let due = document.getElementById("todoDate").value;
   alert(title+descript+due);
+ 
+  if(statusTodo == 'addTodo'){
 
-  let fd = new FormData();
-  fd.append('action', 'addTodo');
-  fd.append('title', title);
-  fd.append('descr', descript);
-  fd.append('due', due);
-  fd.append('status', 'inprogress');
-  fd.append('dcreate', dateCreated);
-  fetch('php/addDelete.php', {
-    method: 'POST',
-    body: fd
-  })
-  .then(response => response.json())
-  .then(data => {
-    if(data.status == "success"){
+    let fd = new FormData();
+    fd.append('action', 'addTodo');
+    fd.append('title', title);
+    fd.append('descr', descript);
+    fd.append('due', due);
+    fd.append('status', 'inprogress');
+    fd.append('dcreate', dateCreated);
+
+    fetch('php/addDelete.php', {
+      method: 'POST',
+      body: fd
+    })
+    .then(response => response.json())
+    .then(data => {
+      if(data.status == "success"){
+        alert(data.msg);
+      };
+    });
+  }else if(statusTodo == 'editTodo'){
+    alert("edit Todo!");
+    
+    let fd = new FormData();
+    fd.append('action', 'editTodo');
+    fd.append('id', tId);
+    fd.append('title', title);
+    fd.append('descr', descript);
+    fd.append('due', due);
+
+    fetch('php/addDelete.php', {
+      method: 'POST',
+      body: fd
+    })
+    .then(response => response.json())
+    .then(data => {
       alert(data.msg);
-    };
-  });
+
+    });
+  };
+  Todo();
 });
 
 
@@ -465,25 +495,118 @@ function loadTodo(){
   .then(response => response.json())
   .then(data => {
     document.getElementById("storedInprogress").innerHTML = "";
+    document.getElementById("storedTodayDue").innerHTML = "";
 
-    data.today.reverse().forEach(td =>{
-      console.log(td.dueDate);
-    });
 
-    data.inprogress.reverse().forEach(inprog =>{
-      console.log(inprog.title);
-      document.getElementById("storedInprogress").innerHTML += 
-      `<div style="background-color: white;padding: 10px;box-sizing: border-box;">
-        <h4>${inprog.dueDate}</h4>
-        <h1 style="margin: 10px 0">${inprog.title}</h1>
-        <p>${inprog.descript}</p>
-      </div><br>`;
-    });
+    if(data.today.length > 0){
+      console.log(data.today);
+      document.getElementById("lblToday").innerHTML = "Today";
+      data.today.reverse().forEach(td =>{
+
+        storedTodayDue.innerHTML += `
+        <div class="loadTodo">
+          <h4>Due: ${td.dueDate}</h4>
+          <h1>${td.title}</h1>
+          <h3>${td.descript}</h3>
+          <div class="tbtn">
+            <small onclick="doneTodo(${td.id},'completed')">Done</small>
+            <small onclick="editTodo(${td.id},'${escapeHTML(td.title)}','${escapeHTML(td.descript)}','${td.dueDate}')">Edit</small>
+            <small onclick="delTodo(${td.id})">Remove</small>
+          </div>
+        </div><br>
+        `;
+      });
+    }
+    
+    if(data.inprogress){
+      data.inprogress.reverse().forEach(inprog =>{
+        document.getElementById("storedInprogress").innerHTML += 
+        `
+        <br>
+        <div class="loadTodo">
+          <h4>Due: ${inprog.dueDate}</h4>
+          <h1>${inprog.title}</h1>
+          <h3>${inprog.descript}</h3>
+          <div class="tbtn">
+            <small onclick="doneTodo(${inprog.id},'completed')">Done</small>
+            <small onclick="editTodo(${inprog.id},'${escapeHTML(inprog.title)}','${escapeHTML(inprog.descript)}','${inprog.dueDate}')">Edit</small>
+            <small onclick="delTodo(${inprog.id})">Remove</small>
+          </div>
+        </div>
+        `;
+      });
+    };
+
+
+    if(data.completed.length > 0){
+      console.log("Ito:  "+data.completed);
+      document.getElementById("storedCompleted").innerHTML = "";
+
+      data.completed.reverse().forEach(complete => {
+        document.getElementById("storedCompleted").innerHTML +=`
+        <div class="loadTodo">
+          <h4>Due: ${complete.dueDate}</h4>
+          <h1>${complete.title}</h1>
+          <h3>${complete.descript}</h3>
+          <div class="tbtn">
+            <small onclick="">Done</small>
+            <small onclick="">Edit</small>
+            <small onclick="delTodo(${complete.id})">Remove</small>
+          </div>
+        </div><br>
+        `;
+      });
+    };
+
+    // Todo();
   });
 };
 
+function doneTodo(id, status){
 
+  let fd = new FormData();
+  fd.append('action', 'updateTodo');
+  fd.append('id', id);
+  fd.append('status', status);
 
+  fetch('php/addDelete.php',{
+    method: 'POST',
+    body: fd
+  })
+  .then(response => response.json())
+  .then(data => {
+    alert(data.msg);
+    Todo();
+  });
+};
+let statusTodo;
+let tId;
+function editTodo(id,title,descript,due){
+  statusTodo = 'editTodo';
+  tId = id;
+  
+  document.getElementById("popTodo").style.display="block";
+  document.getElementById("todoTitle").value=title;
+  document.getElementById("desc").value=descript;
+  document.getElementById("todoDate").value=due;
+};
+function delTodo(id){
+
+  let fd = new FormData();
+  fd.append('action', 'delTodo');
+  fd.append('id', id);
+
+  fetch('php/addDelete.php',{
+    method: 'POST',
+    body: fd
+  })
+  .then(response => response.json())
+  .then(data => {
+    alert(data.msg);
+    Todo();
+  });
+
+};
 
 
 /// 

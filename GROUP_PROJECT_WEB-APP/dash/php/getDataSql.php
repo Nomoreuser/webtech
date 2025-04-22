@@ -67,12 +67,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             if($row['status'] == 'inprogress' && $row['dueDate'] !== $today){
                 $inprogress[] = $row;
             };
-            if($row['dueDate'] == $today){
+            
+            if($row['dueDate'] == $today && $row['status'] == 'inprogress'){
                 $todayTodo[] = $row;
             };
+
+            if($row['status'] == 'completed'){
+                $completed[] = $row;
+            }
         };
 
-        echo json_encode(['inprogress' => $inprogress, 'today' => $todayTodo]);
+        echo json_encode(['inprogress' => $inprogress, 'today' => $todayTodo, 'completed' => $completed]);
         exit;
     }
 
