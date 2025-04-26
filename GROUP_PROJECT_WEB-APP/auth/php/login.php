@@ -27,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($result->num_rows == 1) {
         $_SESSION['uId'] = $row['id'];
         $_SESSION['username'] = $row['username'];
+        $_SESSION['pass'] = str_repeat("• ", strlen($row['password']));
         echo json_encode(["status" => "success","msg" =>"{$_SESSION['uId']}{$_SESSION['username']}"]);
     }else{
         echo json_encode(["status" => "failed", "msg" => "Wrong username or password *"]);

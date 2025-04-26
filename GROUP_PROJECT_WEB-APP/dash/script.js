@@ -33,6 +33,34 @@ document.addEventListener('click', function(event){
   if(event.target === document.getElementById("qbg")){
     document.getElementById("qbg").style.display="none";
   }
+
+  if (event.target == document.getElementById("delaccount")) {
+    DeleteAcc();
+  } else {
+    const dellAcc = document.getElementById("dellAcc");
+    if (dellAcc && !dellAcc.contains(event.target)) {
+      dellAcc.remove();
+    }
+  }
+
+  if (event.target == document.getElementById("setU")) {
+    changeU();
+  } else {
+    const cup = document.getElementById("cup");
+    if (cup && !cup.contains(event.target)) {
+      cup.remove();
+    }
+  }
+
+  if(event.target == document.getElementById("setP")) {
+    changeP();
+  }else {
+    const cpd = document.getElementById("cpd");
+    if(cpd && !cpd.contains(event.target)){
+      document.getElementById("cpd").remove();
+    }
+  }
+
 });
 
 let statusQuote = ""; //on editing or adding new to magamit ulit #popQuote
@@ -394,7 +422,7 @@ function delLink(id){
   .then(response => response.json())
   .then(data => {
     if(data.status == "success"){
-      alert(data.msg);
+      // alert(data.msg);
       Links();
     }else if(data.status = "fail"){
       alert(data.msg);
@@ -420,7 +448,7 @@ function linkClick(i,visit,id){
   .then(response => response.json())
   .then(data => {
     if(data.status == "success"){
-      alert(data.msg);
+      // alert(data.msg);
       loadLinks();
     }
   });
@@ -438,7 +466,7 @@ document.getElementById("submitTodo").addEventListener('click', (event)=>{
   let title = document.getElementById("todoTitle").value;
   let descript = document.getElementById("desc").value;
   let due = document.getElementById("todoDate").value;
-  alert(title+descript+due);
+  // alert(title+descript+due);
  
   if(statusTodo == 'addTodo'){
 
@@ -457,11 +485,12 @@ document.getElementById("submitTodo").addEventListener('click', (event)=>{
     .then(response => response.json())
     .then(data => {
       if(data.status == "success"){
-        alert(data.msg);
+        // alert(data.msg);
+        Todo();
       };
     });
   }else if(statusTodo == 'editTodo'){
-    alert("edit Todo!");
+    // alert("edit Todo!");
     
     let fd = new FormData();
     fd.append('action', 'editTodo');
@@ -476,11 +505,14 @@ document.getElementById("submitTodo").addEventListener('click', (event)=>{
     })
     .then(response => response.json())
     .then(data => {
-      alert(data.msg);
-
+      // alert(data.msg);
+      Todo();
     });
   };
-  Todo();
+  document.getElementById("popTodo").style.display="none";
+  document.getElementById("todoTitle").value = "";
+  document.getElementById("desc").value = "";
+  document.getElementById("todoDate").value = "";
 });
 
 
@@ -549,8 +581,6 @@ function loadTodo(){
           <h1>${complete.title}</h1>
           <h3>${complete.descript}</h3>
           <div class="tbtn">
-            <small onclick="">Done</small>
-            <small onclick="">Edit</small>
             <small onclick="delTodo(${complete.id})">Remove</small>
           </div>
         </div><br>
@@ -558,7 +588,25 @@ function loadTodo(){
       });
     };
 
-    // Todo();
+    if(data.pastDue.length > 0){
+      console.log("Umayyy "+data.pastDue.length);
+      document.getElementById("storedFailed").innerHTML = "";
+
+      data.pastDue.reverse().forEach(past =>{
+
+        document.getElementById("storedFailed").innerHTML += `
+        
+        <div class="loadTodo">
+          <h4>Due: ${past.dueDate}</h4>
+          <h1>${past.title}</h1>
+          <h3>${past.descript}</h3>
+          <div class="tbtn">
+            <small onclick="delTodo(${past.id})">Remove</small>
+          </div>
+        </div><br>
+        `;
+      });
+    };
   });
 };
 
@@ -575,12 +623,13 @@ function doneTodo(id, status){
   })
   .then(response => response.json())
   .then(data => {
-    alert(data.msg);
+    // alert(data.msg);
     Todo();
   });
 };
 let statusTodo;
 let tId;
+
 function editTodo(id,title,descript,due){
   statusTodo = 'editTodo';
   tId = id;
@@ -602,12 +651,11 @@ function delTodo(id){
   })
   .then(response => response.json())
   .then(data => {
-    alert(data.msg);
+    // alert(data.msg);
     Todo();
   });
 
 };
-
 
 /// 
 document.getElementById("LogOut").addEventListener('click', ()=>{
@@ -622,14 +670,277 @@ document.getElementById("LogOut").addEventListener('click', ()=>{
   .then(data =>{
     console.log(data);
     if(data.status == 'success'){
-      window.location.href="../auth/index.php";
+      window.location.href="../auth/index.html";
       alert(data.msg);
     };
   });
 });
 
 
-// =-=--==00==--==-=-=--  popLink -=-=-=-=-=-=-=-=-=
+function choosePf(){
+
+  document.getElementById("setting").innerHTML += `
+  
+  <style>
+    .pfCircle{
+      height: 80px;
+      width: 80px;
+      padding: 5px;
+      border-radius: 50%;
+    }
+    
+    .pfCircle img{
+      height: 100%;
+      width: 100%;
+    }
+    .pfrows{
+      display: flex;
+      flex-direction: row;
+      flex-wrap:wrap;
+      gap: 10px;
+      justify-content:center;
+    }
+  </style>
+
+  <div id="pf" style="width:400px;background-color:rgb(164, 164, 164);position: absolute; top:50%;left:50%;
+    transform:translate(-50%,-50%);padding: 20px">
+    <h1 style="text-align:center;margin-bottom:30px;">Choose Profile Pic</h1>
+    <div class="pfrows">
+      <div class="pfCircle" id="pfCircle0" onclick="pfP(0)">
+        <img src="assets/pf0.png">
+      </div>
+      <div class="pfCircle" id="pfCircle1" onclick="pfP(1)">
+        <img src="assets/pf1.png">
+      </div>
+      <div class="pfCircle" id="pfCircle2" onclick="pfP(2)">
+        <img src="assets/pf2.png">
+      </div>
+      <div class="pfCircle" id="pfCircle3" onclick="pfP(3)">
+        <img src="assets/pf3.png">
+      </div>
+      <div class="pfCircle" id="pfCircle4" onclick="pfP(4)">
+        <img src="assets/pf4.png">
+      </div>
+      <div class="pfCircle" id="pfCircle5" onclick="pfP(5)">
+        <img src="assets/pf5.png">
+      </div>
+      <div class="pfCircle" id="pfCircle6" onclick="pfP(6)">
+        <img src="assets/pf6.png">
+      </div>
+      <div class="pfCircle" id="pfCircle7" onclick="pfP(7)">
+        <img src="assets/pf7.png">
+      </div>
+    </div>
+    <div style="display:flex; gap: 20px;font-weight: bold;margin-top:15px">
+      <div onclick="document.getElementById('pf').remove();">Cancel</div>
+      <div onclick="conpf()" style="color:rgb(16, 163, 0)">Save</di>
+    </div>
+  </div>
+  `;
+  loadpfp();
+}
+let npf;
+
+function pfP(i){
+  let id = "pfCircle"+i;
+
+  document.querySelectorAll(".pfCircle").forEach(pf =>{
+    pf.style.backgroundColor="";
+  });
+
+  let element = document.getElementById(id);
+  element.style.backgroundColor="red";
+
+  npf = i;
+}
+
+if(document.getElementById("upfP").getAttribute('src') === "" && document.getElementById("spfp").getAttribute('src')===""){
+  document.getElementById("upfP").src='assets/user.png';
+  document.getElementById("spfp").src='assets/user.png';
+}
+
+function conpf(){
+
+  let fd = new FormData();
+  fd.append('action', 'pfp');
+  fd.append('i', npf);
+
+  fetch('php/getDataSql.php',{
+    method: 'POST',
+    body: fd
+  })
+  .then(response => response.json())
+  .then(data => {
+    if(data.status == 'success'){
+      npf = data.msg;
+      // alert(data.msg);
+      let me = `assets/pf${npf}.png`;
+      document.getElementById("upfP").src=me;
+      document.getElementById("spfp").src=me;
+      loadpfp();
+    };
+    document.getElementById("pf").remove();
+  });
+};
+
+loadpfp();
+function loadpfp(){
+
+  let fd=new FormData();
+  fd.append('action', 'getpfp');
+  fetch('php/getDataSql.php',{
+    method: 'POST',
+    body: fd
+  })
+  .then(response => response.json())
+  .then(data => {
+    npf = data.msg[0].pfp;
+    let sii = data.msg[0].pfp;
+    let ipfp = "pfCircle"+sii;
+    // alert("this me kkk rahhh "+data.msg[0].pfp);
+    let me = `assets/pf${npf}.png`;
+      document.getElementById("upfP").src=me;
+      document.getElementById("spfp").src=me;
+      document.getElementById(ipfp).style.backgroundColor="green";
+
+  });
+
+};
+
+function changeU(){
+  let me = document.getElementById("setUsername").value;
+  document.getElementById("setting").innerHTML += `
+  <div id="cup" style="width: 300px; position: absolute; top:50%;left:50%;transform:translate(-50%,-50%); 
+    display:block; background-color:rgba(219, 219, 219, 0.92);padding: 10px">
+    <h2 style="text-align: center; margin: 10px 0">Change Username</h2>
+    <h3 style="margin: 5px 0;">Username</h3>
+    <p style="font-weight:bolder;font-size: 24px;color:rgb(74, 74, 74);background-color:rgba(198, 198, 198, 0.9);padding:0 10px">
+      ${me}</p>
+    <h3 style="margin: 5px 0;">New Username</h3>
+    <input id="ccUsername" type="text" style="outline:none;padding: 0 10px">
+    <p id="uexist" style="color:rgb(159, 0, 0)"></p>
+    <div style="display:flex; gap: 20px;font-weight: bold;margin-top:15px">
+      <div onclick="document.getElementById('cup').remove();">Cancel</div>
+      <div onclick="conu()" style="color:rgb(16, 163, 0)">Save</di>
+    </div>
+  </div>
+  `;
+}
+function changeP(){
+  let me = document.getElementById("setPass").value;
+  document.getElementById("setting").innerHTML += `
+  <div id="cpd" style="width: 300px; position: absolute; top:50%;left:50%;transform:translate(-50%,-50%); 
+    display:block; background-color:rgba(219, 219, 219, 0.92);padding: 10px">
+    <h2 style="text-align: center; margin: 10px 0">Change Password</h2>
+    <h3 style="margin: 5px 0;">Password</h3>
+    <p style="font-weight:bolder;font-size: 24px;color:rgb(74, 74, 74);background-color:rgba(198, 198, 198, 0.9);padding:0 10px">
+      ${me}</p>
+    <h3 style="margin: 5px 0;">New Password</h3>
+    <input id="ccPass" type="text" style="outline:none;padding: 0 10px">
+    <div style="display:flex; gap: 20px;font-weight: bold;margin-top:15px">
+      <div onclick="document.getElementById('cpd').remove();">Cancel</div>
+      <div onclick="conp()" style="color:rgb(16, 163, 0)">Save</di>
+    </div>
+  </div>
+  `;
+}
+//password change
+function conp(){
+  let me = document.getElementById("ccPass").value.trim();
+
+  if(me == ""){
+    return alert("enter new password");
+  }
+
+  let fd = new FormData();
+  fd.append('action', 'changePass');
+  fd.append('password', me);
+  fetch('php/getDataSql.php',{
+    method: 'POST',
+    body: fd
+  })
+  .then(response => response.json())
+  .then(data => {
+    alert(data.msg)
+    if(data.status == 'success'){
+      window.location.href="../dash/index.php";
+    };
+  });
+};
+
+//username change
+function conu(){
+  let me = document.getElementById("setUsername").value;
+  let username = document.getElementById("ccUsername").value.trim();
+  if(username == ""){
+    return alert("Enter new username");
+  }
+  if(username == me){
+    return alert("already been!!");
+  }
+
+  let fd = new FormData();
+  fd.append('action', 'changeUsername');
+  fd.append('username', username);
+  fetch('php/getDataSql.php',{
+    method: 'POST',
+    body: fd
+  })
+  .then(response => response.json())
+  .then(data => {
+    if(data.status == 'success'){
+      alert(data.msg);
+      window.location.href="../dash/index.php";
+    }else if(data.status == 'exist'){
+      document.getElementById("uexist").innerHTML = `${data.msg}`;
+      // alert(data.msg);
+    };
+    
+  });
+};
+
+function DeleteAcc(){
+  document.getElementById("setting").innerHTML += `
+  <div id="dellAcc" style="width: 300px; position: absolute; top:50%;left:50%;transform:translate(-50%,-50%); 
+    display:block; background-color:rgba(219, 219, 219, 0.92);padding: 10px">
+
+    <h2 style="text-align: center; margin: 10px 0">Delete Account!!</h2>
+    <h3 style="margin: 5px 0;">Enter Password </h3>
+    <input id="conDel" type="text" style="outline:none;padding: 0 10px">
+    <p id="delwrong" style="color:rgb(196, 0, 0)"></p>
+    <div style="display:flex; gap: 20px;font-weight: bold;margin-top:15px">
+      <div onclick="document.getElementById('dellAcc').remove();">Cancel</div>
+      <div onclick="conDel()" style="color:red">Confirm</di>
+    </div>
+  </div>
+  `;
+}
+
+function conDel(){
+  let a = document.getElementById("conDel").value.trim();
+  if(a == ""){
+    return alert("Enter !!!");
+  }
+  let fd = new FormData();
+  fd.append('action', 'deleteAccount');
+  fd.append('pass', a);
+  fetch('php/getDataSql.php',{
+    method: 'POST',
+    body: fd
+  })
+  .then(response => response.json())
+  .then(data => {
+    if(data.status == 'deleted'){
+      alert(data.status);
+      window.location.href='../auth/index.html';
+    }else{
+      document.getElementById("delwrong").innerHTML = "*incorrect password*";
+    }
+  });
+}
+
+
+
 
 
 ///  -- - -- - - - -MAIN -- - - - -- - - -  -- -//
@@ -644,6 +955,9 @@ function Links(){
 function Todo(){
   handleShow("To-do",tasks,quotes,links)
   loadTodo();
+}
+function Setting(){
+  document.getElementById("setting").style.display="block";
 }
 
 function handleShow(setLabel,show,hide,hide1){

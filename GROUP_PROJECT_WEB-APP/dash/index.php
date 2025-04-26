@@ -37,7 +37,7 @@
                 <dotlottie-player src="https://lottie.host/f136a902-dc81-405c-8123-f9be7400ef71/028hTUYSGZ.lottie" background="transparent" speed="1" style="width: 150px; height: 150px" loop autoplay></dotlottie-player>
                 <div style="height:fit-content;position:relative;top:50%;transform:translateY(40%);margin-right:25px;">
                     <h3>Log in or Create first! </h3>
-                    <dotlottie-player onclick="window.location.href=\'../auth/index.php\'" src="https://lottie.host/172cd63d-5478-44ef-8240-b76222c60ca2/yuiAJxCd66.lottie" background="transparent" speed="2.5" style="width: 70px; height: 70px; float:right;" loop autoplay></dotlottie-player>
+                    <dotlottie-player onclick="window.location.href=\'../auth/index.html\'" src="https://lottie.host/172cd63d-5478-44ef-8240-b76222c60ca2/yuiAJxCd66.lottie" background="transparent" speed="2.5" style="width: 70px; height: 70px; float:right;" loop autoplay></dotlottie-player>
                 </div>
             </div>';
         exit;
@@ -55,7 +55,7 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Allerta&display=swap" rel="stylesheet">
 
-    <link rel="icon" type="image/png" href="favicon.ico">
+    <link rel="icon" type="image/png" href="assets/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -71,7 +71,7 @@
             <nav>
                 <div class="user-img-name">
                     <div class="user-img">
-                        <img src="" alt="">
+                        <img id="upfP" src="" alt="" style="height: 100%;width: 100%">
                     </div>
                     <h1 class="user-name"><?php echo htmlspecialchars($_SESSION['username']) ?></h1>
                 </div>
@@ -104,7 +104,10 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-todo"><rect x="3" y="5" width="6" height="6" rx="1"/><path d="m3 17 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/></svg>
                         <p>To Do</p>
                     </div>
-
+                    <div class="button setting" onclick="Setting()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings-icon lucide-settings"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <p>Setting</p>
+                    </div>
                 </div>
                 <div id="LogOut" style="text-align: center; font-size: 25px; padding: 20px 0; border-top: 1px solid white;font-weight:bolder; color:rgba(168, 168, 168, 0.88);">
                     Log out
@@ -155,8 +158,12 @@
                                 </div>
                             </div>
                             <div class="todo" id="failed">
-                                <h1>Failed</h1>
-                                <div id="storedFailed"></div>
+                                <h1 style="font-size: 35px;margin-bottom: 20px;color:rgba(255, 73, 67, 0.93);">Past Due</h1>
+                                <div class="scroll">
+                                    <div id="storedFailed">
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </section>
@@ -217,6 +224,26 @@
     <div id="qbg">
         <div id="qbox"></div>
     </div>
+
+    <div id="setting">
+        <div class="settingBox">
+            <h2 style="position:absolute; right:10px;top:10px;" onclick="setting.style.display='none',document.getElementById('changeUP').remove()">
+                ❌</h2>
+            <div style="margin: 0 0 40px 0"><h1>Account Settings</h1></div>
+            <div class="image"><img id="spfp" src=""></div>
+            <h5 id="chooseP" onclick="choosePf()">Change</h5>
+            <h3>Username</h3>
+            <input id="setUsername" type="text" value="<?php echo htmlspecialchars($_SESSION['username']) ?>" hidden>
+            <p class="setInfo" id="setU" ><?php echo htmlspecialchars($_SESSION['username']) ?></p>
+            <h3>Password</h3>
+            <input id="setPass" type="text" value="<?php echo htmlspecialchars($_SESSION['pass']) ?>" hidden>
+            <p class="setInfo" id="setP"><?php echo htmlspecialchars($_SESSION['pass']) ?></p>
+
+            <br>
+            <div class="btn" style="color:rgba(156, 26, 26, 0.94)" id="delaccount">Delete Account</div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
     
 </body>
