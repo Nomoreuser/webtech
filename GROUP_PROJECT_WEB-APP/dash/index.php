@@ -229,9 +229,9 @@
         <div class="settingBox">
             <h2 style="position:absolute; right:10px;top:10px;" onclick="setting.style.display='none',document.getElementById('changeUP').remove()">
                 ❌</h2>
-            <div style="margin: 0 0 40px 0"><h1>Account Settings</h1></div>
+            <div style="margin: 0 0 40px 0;color:rgb(62, 62, 62)"><h1>Account Settings</h1></div>
             <div class="image"><img id="spfp" src=""></div>
-            <h5 id="chooseP" onclick="choosePf()">Change</h5>
+            <h4 id="chooseP" onclick="choosePf()">Change</h4>
             <h3>Username</h3>
             <input id="setUsername" type="text" value="<?php echo htmlspecialchars($_SESSION['username']) ?>" hidden>
             <p class="setInfo" id="setU" ><?php echo htmlspecialchars($_SESSION['username']) ?></p>

@@ -700,10 +700,15 @@ function choosePf(){
       gap: 10px;
       justify-content:center;
     }
+    @keyframes scale{
+      0%{transform: scale(1)}
+      50%{transform: scale(.9)}
+      100%{transform: scale(1)}
+    }
   </style>
 
-  <div id="pf" style="width:400px;background-color:rgb(164, 164, 164);position: absolute; top:50%;left:50%;
-    transform:translate(-50%,-50%);padding: 20px">
+  <div id="pf" style="width:400px;background-color:rgb(214, 214, 214);position: absolute; top:50%;left:50%;
+    transform:translate(-50%,-50%);padding: 20px;border-radius: 15px;border: 1px solid rgb(133, 133, 133);">
     <h1 style="text-align:center;margin-bottom:30px;">Choose Profile Pic</h1>
     <div class="pfrows">
       <div class="pfCircle" id="pfCircle0" onclick="pfP(0)">
@@ -731,16 +736,16 @@ function choosePf(){
         <img src="assets/pf7.png">
       </div>
     </div>
-    <div style="display:flex; gap: 20px;font-weight: bold;margin-top:15px">
+    <div style="display:flex; gap: 20px;font-weight: bolder;font-size:21px;margin-top:15px">
       <div onclick="document.getElementById('pf').remove();">Cancel</div>
-      <div onclick="conpf()" style="color:rgb(16, 163, 0)">Save</di>
+      <div onclick="conpf()" style="color:rgb(16, 163, 0);">Save</di>
     </div>
   </div>
   `;
   loadpfp();
 }
 let npf;
-
+let userspfp;
 function pfP(i){
   let id = "pfCircle"+i;
 
@@ -748,8 +753,12 @@ function pfP(i){
     pf.style.backgroundColor="";
   });
 
-  let element = document.getElementById(id);
-  element.style.backgroundColor="red";
+  // alert(userspfp+" "+i);
+  if(userspfp == i){
+    document.getElementById(id).style.backgroundColor="rgb(21, 160, 74)";
+  }else{
+    document.getElementById(id).style.backgroundColor="rgb(46, 100, 131)";
+  }
 
   npf = i;
 }
@@ -795,13 +804,17 @@ function loadpfp(){
   .then(response => response.json())
   .then(data => {
     npf = data.msg[0].pfp;
-    let sii = data.msg[0].pfp;
-    let ipfp = "pfCircle"+sii;
+    userspfp = data.msg[0].pfp;
+    let id = "pfCircle"+userspfp;
     // alert("this me kkk rahhh "+data.msg[0].pfp);
     let me = `assets/pf${npf}.png`;
       document.getElementById("upfP").src=me;
       document.getElementById("spfp").src=me;
-      document.getElementById(ipfp).style.backgroundColor="green";
+      document.getElementById(id).style.cssText=`
+      background-color: rgb(21, 160, 74);
+      border: 2px solid rgb(0, 255, 98);
+      animation: scale 2s ease-out infinite;
+      `;
 
   });
 
