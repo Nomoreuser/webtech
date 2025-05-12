@@ -147,12 +147,14 @@ section{
   /* background-color: #007bff; */
   /* overflow-y: auto;
   overflow-x: hidden; */
-}
-
-#forQuotes{
   overflow-y: auto;
   overflow-x: hidden;
 }
+
+/* #forQuotes{
+  overflow-y: auto;
+  overflow-x: hidden;
+} */
 
 
 /* -=- my hidden div will only show when user click the New Quote  -=--=*/
@@ -162,6 +164,7 @@ section{
   background-color:  #0000008c;
   height: 100dvh;
   width: 100vw;
+  z-index: 2;
 }
 #quoteBox{
   height: 450px;
@@ -320,6 +323,10 @@ section{
   padding: 15px;
 }
 
+.linkList:hover{
+  background-color: #d3d7d981;
+}
+
 .linkImg{
   height: 70px;
   width: fit-content;
@@ -385,8 +392,9 @@ section{
   gap: 35px;
   justify-content: center;
   align-items: first baseline;
-  height: 100%;
+  height: 97%;
   padding: 0 3%;
+  margin-top: 20px;
 }
 .todo{
   box-sizing: border-box;
@@ -538,11 +546,9 @@ section{
 #setting{
   box-sizing: border-box;
   display: none;
-  position: absolute;
-  height: 100dvh;
-  width: 100vw;
-  background-color: #cbcbcb;
-  z-index: 2;
+  /* height: 100dvh;
+  width: 100vw; */
+  /* background-color: #cbcbcb; */
 }
 #setting .settingBox{
   position: absolute;

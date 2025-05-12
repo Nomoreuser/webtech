@@ -71,14 +71,21 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         exit;
     }
 
+    // change pass
     if($_POST['action'] == 'changePass'){
         $newPass = $_POST['password'];
 
-        $sql=$conn->prepare("UPDATE users SET password=? WHERE id=?");
-        $sql->bind_param("si", $newPass,$uId);
-        if($sql->execute()){
-            $_SESSION['pass'] = str_repeat("• ", strlen($newPass));
-            echo json_encode(['status' => 'success','msg' => 'change pass!!']);
+        $check = $conn->query("SELECT * FROM users WHERE id=$uId AND password='$newPass'");
+        if($check->num_rows > 0){
+            echo json_encode(['status' => 'fail']);
+            exit;
+        }else{
+            $sql=$conn->prepare("UPDATE users SET password=? WHERE id=?");
+            $sql->bind_param("si", $newPass,$uId);
+            if($sql->execute()){
+                $_SESSION['pass'] = str_repeat("• ", strlen($newPass));
+                echo json_encode(['status' => 'success','msg' => 'change pass!!']);
+            }
         }
         exit;
     }

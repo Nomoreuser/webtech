@@ -68,6 +68,7 @@
 
         <div class="container">
 
+        <!-- nav left side where buttons for quotes link todo setting to render it to main && show username and profil pic -->
             <nav>
                 <div class="user-img-name">
                     <div class="user-img">
@@ -115,6 +116,7 @@
             </nav>
 
 
+            <!-- this the right side wheere it show if user  click on nav buttons quote links todo -->
             <main>
                 
                     <div class="lbl">
@@ -168,6 +170,25 @@
                         </div>
                     </section>
 
+                    <section id="setting">
+                        <!-- for user setting where he can change and delete -->
+                            <div class="settingBox">
+                                <!-- <h2 style="position:absolute; right:10px;top:10px;" onclick="setting.style.display='none',document.getElementById('changeUP').remove()">
+                                ❌</h2> -->
+                                <div style="margin: 0 0 40px 0;color:rgb(62, 62, 62)"><h1>Account Settings</h1></div>
+                                <div class="image"><img id="spfp" src=""></div>
+                                <h4 id="chooseP" onclick="choosePf()">Change</h4>
+                                <h3>Username</h3>
+                                <input id="setUsername" type="text" value="<?php echo htmlspecialchars($_SESSION['username']) ?>" hidden>
+                                <p class="setInfo" id="setU" ><?php echo htmlspecialchars($_SESSION['username']) ?></p>
+                                <h3>Password</h3>
+                                <input id="setPass" type="text" value="<?php echo htmlspecialchars($_SESSION['pass']) ?>" hidden>
+                                <p class="setInfo" id="setP"><?php echo htmlspecialchars($_SESSION['pass']) ?></p>
+
+                                <br>
+                                <div class="btn" style="color:rgba(156, 26, 26, 0.94)" id="delaccount">Delete Account</div>
+                            </div>
+                    </section>
                 
             </main>
         </div>
@@ -176,6 +197,11 @@
 
 
 
+
+    <!-- this below is hide using display none only show when user click the button for it -->
+
+
+    <!-- this is the add quote where user input the content and also i reuse this for in edit where user is edit the data -->
     <div id="popQuote" class="pop">
         <form id="quoteBox">
             <h1>Quote</h1>
@@ -190,6 +216,7 @@
         </form>
     </div>
 
+    <!-- add links content  -->
     <div id="popLink" class="pop">
         <form id="saveLinks">
             <h1>Save Links</h1>
@@ -201,10 +228,11 @@
             <h2>URL</h2>
             <input type="text" id="linkURL" placeholder="paste here..">
             <button id="submitLink" disabled>Add</button>
-            <button id="cancelLink">Cancel</button>
+            <button id="cancelLink" type="button">Cancel</button>
         </form>
     </div>
 
+    <!-- add Todo content same in quote i reuse this when user is editing the data -->
     <div id="popTodo" class="pop">
             
         <form class="todoBox">
@@ -221,10 +249,12 @@
 
     </div>
     
+    <!-- this is for quote to show when user click on the file it see it full content  -->
     <div id="qbg">
         <div id="qbox"></div>
     </div>
 
+    <!-- for user setting where he can change and delete
     <div id="setting">
         <div class="settingBox">
             <h2 style="position:absolute; right:10px;top:10px;" onclick="setting.style.display='none',document.getElementById('changeUP').remove()">
@@ -242,7 +272,7 @@
             <br>
             <div class="btn" style="color:rgba(156, 26, 26, 0.94)" id="delaccount">Delete Account</div>
         </div>
-    </div>
+    </div> -->
 
     <script src="script.js"></script>
     

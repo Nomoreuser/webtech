@@ -134,7 +134,7 @@ document.getElementById("Log-in").addEventListener("submit", function(event){
             document.getElementById("checkUsers").innerHTML = `🚫 ${data.msg}`;
         }
         if(data.status === "success"){
-            alert(data.msg);
+            // alert(data.msg);
             window.location.href = "../dash/index.php";
         }
     });

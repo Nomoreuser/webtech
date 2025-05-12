@@ -1,11 +1,5 @@
 
 
-
-let quotes = document.getElementById("forQuotes");
-let links = document.getElementById("forLinks");
-let tasks = document.getElementById("forTodo");
-
-
 document.addEventListener('click', function(event){
 
   if(event.target === document.getElementById("addBtn")){
@@ -32,6 +26,7 @@ document.addEventListener('click', function(event){
 
   if(event.target === document.getElementById("qbg")){
     document.getElementById("qbg").style.display="none";
+    dltstatus = "";
   }
 
   if (event.target == document.getElementById("delaccount")) {
@@ -58,8 +53,8 @@ document.addEventListener('click', function(event){
     const cpd = document.getElementById("cpd");
     if(cpd && !cpd.contains(event.target)){
       document.getElementById("cpd").remove();
-    }
-  }
+    };
+  };
 
 });
 
@@ -239,15 +234,11 @@ function loadQuotes(){
 };
 
 let dltstatus;
+
 function delQuote(event,id){
   event.stopPropagation();
 
-  if(dltstatus == 'indlt'){
-    document.getElementById("dellot").play();
-    document.getElementById("dellot").addEventListener('complete', ()=>{
-      document.getElementById("qbg").style.display="none";
-    },{once:true});
-  }
+  document.getElementById("qbg").style.display="none";
 
   let fd = new FormData();
   fd.append('action', 'dltQuote');
@@ -276,17 +267,19 @@ function escapeHTML(str){
     .replace(/'/g, "&#039;");
 };
 
+
+let qId;
+let qtitle;
+let qcontent;
 function openQuote(el){
   dltstatus = 'indlt';
-  let id = el.dataset.id;
-  let title = el.dataset.title;
-  let cc = el.dataset.content;
+  qId = el.dataset.id;
+  qtitle = el.dataset.title;
+  qcontent = el.dataset.content;
   let dc = el.dataset.date;
 
-
-
-  console.log(id+cc+title+dc);
-
+  // console.log(id+cc+title+dc);
+  // dd(cc);
   let a = document.getElementById("qbox");
 
   document.getElementById("qbg").style.display="block";
@@ -297,33 +290,30 @@ function openQuote(el){
       style="width: 75px; height: 75px; position: absolute;top:0; border-radius:10px" loop autoplay></dotlottie-player>
 
     <div style="position:absolute; right: 20px;top:-40px; padding: 10px; background-color:rgba(120, 152, 177, 0.79); display: flex;align-items: center;gap:10px;border-radius:25px 25px;">
-      <svg class="qqq" onclick="editQuote(${id},'${escapeHTML(title)}','${escapeHTML(cc)}')" xmlns="http://www.w3.org/2000/svg" style="background-color:rgba(0, 0, 0, 0.87);border-radius:100%;padding:3.5px;" width="24" height="24" viewBox="-5 -5 34 34" fill="black" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil-icon lucide-pencil"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg>
-      <dotlottie-player class="qqq" id="dellot"; onclick="delQuote(event,${id})" src="https://lottie.host/45bf31cf-8b69-4dcc-8219-ab762867d263/2EAsmMeil5.lottie" background="transparent" speed="3"
-        style="width: 50px; height: 50px;"></dotlottie-player>
+      <svg class="qqq" onclick='editQuote()' xmlns="http://www.w3.org/2000/svg" style="background-color:rgba(0, 0, 0, 0.87);border-radius:100%;padding:3.5px;" width="24" height="24" viewBox="-5 -5 34 34" fill="black" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil-icon lucide-pencil"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg>
+      <svg class="qqq" id="dellot"; onclick="delQuote(event,${qId})" xmlns="http://www.w3.org/2000/svg" style="background-color:rgba(143, 0, 0, 0.88);border-radius:100%;padding:3.5px;" width="24" height="24" viewBox="-5 -5 34 34" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
       <svg class="qqq" onclick="document.getElementById('qbg').style.display='none'" xmlns="http://www.w3.org/2000/svg" style="background-color:rgba(255, 93, 93, 0.96);border-radius:15px;padding:3.5px;" width="24" height="24" viewBox="-5 -5 34 34" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-x-icon lucide-circle-x"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
     </div>
     <div style="text-align: center; font-family: 'Inter', sans-serif; font-size:26px;font-weight:bold;">
       <div style="text-align:right;margin: 20px 0">
         <small style="font-size:14px; padding: 10px">${dc}</small>
       </div>
-      <p style="word-break: break-word;">${escapeHTML(cc)}</p>
-      <p style="margin: 40px 0 0 0;">${escapeHTML(title)}</p>
+      <p style="word-break: break-word;">${escapeHTML(qcontent)}</p>
+      <p style="margin: 40px 0 0 0;">${escapeHTML(qtitle)}</p>
     </div>
     <dotlottie-player src="https://lottie.host/2bf652cf-ff04-4777-a0e2-fee9fae51ebc/GWVTTyjlWc.lottie" background="transparent" speed="3" 
       style="width: 75px; height: 75px; position: absolute;bottom:0px;right:25px;transform:rotate(-180deg);" loop autoplay></dotlottie-player>
     `;
 };
-let qId;
-function editQuote(id,title,cc){
-  qId = id;
+
+function editQuote(){
   document.getElementById("qbg").style.display="none";
   addQuotes();
   statusQuote = "editQuote";
   console.log(statusQuote+" "+qId);
 
-
-  document.getElementById("quoteTitle").value = title;
-  document.getElementById("quoteInp").value = cc;
+  document.getElementById("quoteTitle").value = qtitle;
+  document.getElementById("quoteInp").value = qcontent;
 
 }
 
@@ -360,7 +350,7 @@ document.getElementById("submitLink").addEventListener('click', function(event){
   .then(response => response.json())
   .then(data => {
     if(data.status == 'success'){
-      alert(data.msg);
+      // alert(data.msg);
 
       document.getElementById("linkName").value="";
       document.getElementById("linkURL").value="";
@@ -391,7 +381,7 @@ function loadLinks(){
         let faviconUrl = `https://www.google.com/s2/favicons?sz=128&domain=${domain}`;
         gridLinks.innerHTML += ` 
         <div class="gridItemLink">
-          <div style="width:200px; position: absolute">
+          <div style="width:200px; position: relative;">
             <div class="delLink" onclick="delLink(${link.id})">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bookmark-x-icon lucide-bookmark-x"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2Z"/><path d="m14.5 7.5-5 5"/><path d="m9.5 7.5 5 5"/></svg>
             </div>
@@ -455,9 +445,10 @@ function linkClick(i,visit,id){
   window.open(i,'_blank');
 }
 
-///
+/// format for input date and set the minimum
 flatpickr("#todoDate",{
-  dateFormat: "m/d/Y"
+  dateFormat: "m/d/Y",
+  minDate: "today"
 });
 
 document.getElementById("submitTodo").addEventListener('click', (event)=>{
@@ -548,6 +539,8 @@ function loadTodo(){
         </div><br>
         `;
       });
+    }else{
+      document.getElementById("lblToday").innerHTML = "No due today!";
     }
     
     if(data.inprogress){
@@ -570,7 +563,7 @@ function loadTodo(){
     };
 
 
-    if(data.completed.length > 0){
+    if(data.completed){
       console.log("Ito:  "+data.completed);
       document.getElementById("storedCompleted").innerHTML = "";
 
@@ -588,7 +581,7 @@ function loadTodo(){
       });
     };
 
-    if(data.pastDue.length > 0){
+    if(data.pastDue){
       console.log("Umayyy "+data.pastDue.length);
       document.getElementById("storedFailed").innerHTML = "";
 
@@ -607,6 +600,7 @@ function loadTodo(){
         `;
       });
     };
+    // Todo();
   });
 };
 
@@ -639,8 +633,8 @@ function editTodo(id,title,descript,due){
   document.getElementById("desc").value=descript;
   document.getElementById("todoDate").value=due;
 };
-function delTodo(id){
 
+function delTodo(id){
   let fd = new FormData();
   fd.append('action', 'delTodo');
   fd.append('id', id);
@@ -654,12 +648,45 @@ function delTodo(id){
     // alert(data.msg);
     Todo();
   });
-
 };
 
-/// 
+//this pop up and asking for confirmation of logout user
+function showLogout(){
+
+  let me = document.createElement("div");
+  me.id="conLogout";
+  me.innerHTML += `
+  <div style="position: absolute; height:100vh; width: 100vw;background-color:rgba(28, 28, 28, 0.56);z-index: 3;" onclick='document.getElementById("conLogout").remove()'>
+    <div style="position: absolute; left: 50%; background-color:rgba(228, 228, 228, 0.94); transform: translateX(-50%);
+       padding: 20px;color:rgba(33, 33, 33, 0.91); border-radius: 0 0 10px 10px">
+
+      <dotlottie-player src="https://lottie.host/f136a902-dc81-405c-8123-f9be7400ef71/028hTUYSGZ.lottie" background="transparent" speed="1" style="width: 100px; height: 100px;margin:auto;" loop autoplay></dotlottie-player>
+      
+      <h2>Are you sure you want to log out?</h2>
+
+      <div style="display: flex; gap: 20px; justify-content: flex-end; margin-top: 15px; font-weight: bolder;">
+
+        <h4 onclick='document.getElementById("conLogout").remove()' style="border: 1px solid gray;padding: 5px 8px;border-radius: 8px">
+          Cancel</h4>
+
+        <h4 onclick="confirmLogout()" style="border: 1px solid gray;padding: 5px 8px; background-color:rgb(121, 137, 255);border-radius: 8px">
+          Log out</h4>
+
+      </div>
+
+    </div>
+  </div>`;
+  document.body.appendChild(me);
+}
+
+
 document.getElementById("LogOut").addEventListener('click', ()=>{
 
+  showLogout();
+
+  console.log("hfhfhf");
+});
+function confirmLogout(){
   let fd = new FormData();
   fd.append('action', 'logOut')
   fetch('php/getDataSql.php',{
@@ -671,10 +698,11 @@ document.getElementById("LogOut").addEventListener('click', ()=>{
     console.log(data);
     if(data.status == 'success'){
       window.location.href="../auth/index.html";
-      alert(data.msg);
+      // alert(data.msg);
     };
   });
-});
+}
+
 
 
 function choosePf(){
@@ -763,10 +791,10 @@ function pfP(i){
   npf = i;
 }
 
-if(document.getElementById("upfP").getAttribute('src') === "" && document.getElementById("spfp").getAttribute('src')===""){
-  document.getElementById("upfP").src='assets/user.png';
-  document.getElementById("spfp").src='assets/user.png';
-}
+// if(document.getElementById("upfP").getAttribute('src') === "" && document.getElementById("spfp").getAttribute('src')===""){
+//   document.getElementById("upfP").src='assets/user.png';
+//   document.getElementById("spfp").src='assets/user.png';
+// }
 
 function conpf(){
 
@@ -792,6 +820,7 @@ function conpf(){
   });
 };
 
+// this loadpfp() it get the pfp number that store on my database to set the user profile pic
 loadpfp();
 function loadpfp(){
 
@@ -808,18 +837,25 @@ function loadpfp(){
     let id = "pfCircle"+userspfp;
     // alert("this me kkk rahhh "+data.msg[0].pfp);
     let me = `assets/pf${npf}.png`;
+
+    if(npf == null){
+      document.getElementById("upfP").src='assets/user.png';
+      document.getElementById("spfp").src='assets/user.png';
+    }else{
       document.getElementById("upfP").src=me;
       document.getElementById("spfp").src=me;
+    }
+
       document.getElementById(id).style.cssText=`
       background-color: rgb(21, 160, 74);
       border: 2px solid rgb(0, 255, 98);
       animation: scale 2s ease-out infinite;
       `;
-
   });
 
 };
 
+// pop up when user click username in setting it show a option new username 
 function changeU(){
   let me = document.getElementById("setUsername").value;
   document.getElementById("setting").innerHTML += `
@@ -839,6 +875,8 @@ function changeU(){
   </div>
   `;
 }
+
+// pop up when user click their password in setting to change it to new password
 function changeP(){
   let me = document.getElementById("setPass").value;
   document.getElementById("setting").innerHTML += `
@@ -857,7 +895,8 @@ function changeP(){
   </div>
   `;
 }
-//password change
+
+//password change , this function will send it to php then update the password to new pass
 function conp(){
   let me = document.getElementById("ccPass").value.trim();
 
@@ -874,14 +913,17 @@ function conp(){
   })
   .then(response => response.json())
   .then(data => {
-    alert(data.msg)
+    // alert(data.msg)
     if(data.status == 'success'){
       window.location.href="../dash/index.php";
+    };
+    if(data.status == 'fail'){
+      return alert("already been using this password!!");
     };
   });
 };
 
-//username change
+//username change , same in password update a new password set in database 
 function conu(){
   let me = document.getElementById("setUsername").value;
   let username = document.getElementById("ccUsername").value.trim();
@@ -911,7 +953,7 @@ function conu(){
     
   });
 };
-
+// when clicked this DeleteAcc will pop up to enter the password before the deletion account
 function DeleteAcc(){
   document.getElementById("setting").innerHTML += `
   <div id="dellAcc" style="width: 300px; position: absolute; top:50%;left:50%;transform:translate(-50%,-50%); 
@@ -957,28 +999,43 @@ function conDel(){
 
 
 ///  -- - -- - - - -MAIN -- - - - -- - - -  -- -//
+// button quotes links todo setting
+let quotes = document.getElementById("forQuotes");
+let links = document.getElementById("forLinks");
+let tasks = document.getElementById("forTodo");
+let setting = document.getElementById("setting");
+
 function Quotes(){
-  handleShow("Quotes", quotes, links, tasks);
+  handleShow("Quotes", quotes, links, tasks,setting);
   loadQuotes();
 }
 function Links(){
-  handleShow("Links",links,quotes,tasks);
+  handleShow("Links",links,quotes,tasks,setting);
   loadLinks();
 }
 function Todo(){
-  handleShow("To-do",tasks,quotes,links)
+  handleShow("To-do",tasks,quotes,links,setting);
   loadTodo();
 }
 function Setting(){
-  document.getElementById("setting").style.display="block";
+  handleShow("Setting",setting,tasks,quotes,links);
+  // document.getElementById("setting").style.display="block";
 }
 
-function handleShow(setLabel,show,hide,hide1){
+function handleShow(setLabel,show,hide,hide1,hide2){
   document.getElementById("labelC").innerHTML = setLabel;
+  document.getElementById("labelC").style.cssText=`
+    background-color:rgba(95, 95, 95, 0.62);
+    width: fit-content;
+    border-radius: 15px;
+    margin: 10px 0 0 25px;
+
+    `;
 
   show.style.display="block";
   hide.style.display="none";
   hide1.style.display="none";
+  hide2.style.display="none";
 }
 ///  == - - - = -= - = -= -= - =- =- = -= -= - =- =- = -=//
 
