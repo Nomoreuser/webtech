@@ -1036,6 +1036,8 @@ function handleShow(setLabel,show,hide,hide1,hide2){
   hide.style.display="none";
   hide1.style.display="none";
   hide2.style.display="none";
+
+  document.getElementById("greet").style.display="none";
 }
 ///  == - - - = -= - = -= -= - =- =- = -= -= - =- =- = -=//
 

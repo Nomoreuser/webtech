@@ -124,6 +124,57 @@
                     </div>
     
                     <!-- <hr style="margin: 0;"> -->
+                     <section id="greet" style="display:block;text-align:center;height: 100%;">
+                        <dotlottie-player
+                            src="https://lottie.host/cc2459e3-789c-4569-9ebd-2e187e36a306/794vlU8cel.lottie"
+                            background="transparent"
+                            speed="1"
+                            style="width: 300px; height: 300px; margin:auto;"
+                            loop
+                            autoplay
+                        ></dotlottie-player>
+                        <h1 style="font-size: 80px;color:rgba(201, 201, 201, 0.87);margin-bottom: 40px">
+                            Hi <?php echo htmlspecialchars($_SESSION['username']) ?>, Welcome to Quick/Save!</h1>
+                        <h2 style="color:rgba(195, 195, 195, 0.87)">Get Started</h2>
+                        <div style="display: flex; gap: 60px; justify-content:center;margin-top: 20px">
+                            <div class="gb" onclick="Quotes()">
+                                <dotlottie-player
+                                    src="https://lottie.host/acac20cf-0bf1-452f-9af4-c7418d2db750/hWBdWG8v6j.lottie"
+                                    background="transparent"
+                                    speed="1"
+                                    style="width: 200px; height: 200px; margin:auto"
+                                    loop
+                                    autoplay
+                                ></dotlottie-player>
+                                <h3>Quotes</h3>
+                                <h4>Save your favorite quotes to revisit anytime. Keep inspiration just a click away!</h4>
+                            </div>
+                            <div class="gb" onclick="Links()">
+                                <dotlottie-player
+                                    src="https://lottie.host/efd1ee03-a31c-4a77-9d6c-eb052adffff4/tOnFAGFg5W.lottie"
+                                    background="transparent"
+                                    speed="1"
+                                    style="width: 200px; height: 200px; margin: auto"
+                                    loop
+                                    autoplay
+                                ></dotlottie-player>
+                                <h3>Links</h3>
+                                <h4>Store useful links in one place for quick access. Never lose an important page again!</h4>
+                            </div>
+                            <div class="gb" onclick="Todo()">
+                                <dotlottie-player
+                                    src="https://lottie.host/731743be-9ec0-4bee-bb7b-d2e31a875613/bonWalBN3T.lottie"
+                                    background="transparent"
+                                    speed="1"
+                                    style="width: 200px; height: 200px; margin: auto"
+                                    loop
+                                    autoplay
+                                ></dotlottie-player>
+                                <h3>To-Do</h3>
+                                <h4>Stay organized with your personal task list. Check off items as you go!</h4>
+                            </div>
+                        </div>
+                     </section>
                     
                     <section id="forQuotes">
                         
